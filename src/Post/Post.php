@@ -115,6 +115,44 @@ class Post extends \LizusVitara\Model\SingleData
     protected function has_post_thumbnail(){
         return \has_post_thumbnail($this->id);
     }
+
+    /**
+     * getContentImages
+     * 获取文章内容中的所有图片地址
+     * @return array
+     */
+    public function getContentImages(){
+        $rs=[];
+        $content = $this->post_content;
+        $c_img='~https?://[^\s]+\.(jpg|jpeg|gif|png)~';
+        if(\preg_match_all( $c_img, $content, $imgs )){
+            $rs=$imgs[0];
+        }
+        return $rs;
+    }
+    
+    /**
+    * getPostAttachments
+    * 获取文章的所有上传图片,返回为所有图片地址
+    *
+    * @return array
+    */
+    public function getPostAttachments(){
+        $images_array=[];
+        $args=array(
+            'post_type'=>'attachment',
+            'post_mime_type'=>'image',
+            'post_parent'=>$this->id,
+        );
+        $images=\get_children($args);
+        if(!empty($images)){
+            foreach ($images as $attachment_id => $attachment){
+                $image_src=\wp_get_attachment_image_src($attachment_id, 'full');
+                $images_array[]=$image_src;
+            }
+        }
+        return $images_array;
+    }
     
     /**
     * getThumb
@@ -130,9 +168,9 @@ class Post extends \LizusVitara\Model\SingleData
             $src=$image[0];
         }
         if(empty($src)){ //如果内容中有图片
-            $images=\LizusVitara\get_content_images($pid);
+            $images=$this->getContentImages($pid);
             if(empty($images)){
-                $images=\LizusVitara\get_post_attachments($pid);//如果有在这个文章里上传图片
+                $images=$this->getPostAttachments($pid);//如果有在这个文章里上传图片
             }
             if(!empty($images)){
                 $src=array_shift($images);

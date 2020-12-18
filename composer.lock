@@ -1,0 +1,108 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "541e4f0c5455cf7a4735146f318d12fe",
+    "packages": [
+        {
+            "name": "lizus/php-loaddir",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lizus/php-loaddir.git",
+                "reference": "809cf9e7c6dc113c9da2a44c7cf09577e414b298"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lizus/php-loaddir/zipball/809cf9e7c6dc113c9da2a44c7cf09577e414b298",
+                "reference": "809cf9e7c6dc113c9da2a44c7cf09577e414b298",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lizus\\LoadDir\\": "src/class/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lizus",
+                    "email": "lizus.com@gmail.com"
+                }
+            ],
+            "description": "load dir files",
+            "time": "2020-08-29T03:00:00+00:00"
+        },
+        {
+            "name": "lizus/wp-function",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lizus/wp-function.git",
+                "reference": "22f55302042d6124bc0141f789ee4e1a3ed79997"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lizus/wp-function/zipball/22f55302042d6124bc0141f789ee4e1a3ed79997",
+                "reference": "22f55302042d6124bc0141f789ee4e1a3ed79997",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "lizus/php-loaddir": "dev-master",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/load.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "lizus",
+                    "email": "lizus.com@gmail.com"
+                }
+            ],
+            "description": "wp function",
+            "time": "2020-12-18T07:38:35+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "lizus/wp-function": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.0"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
+}

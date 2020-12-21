@@ -162,7 +162,7 @@ class User extends \LizusVitara\Model\SingleData
   public function addLoginLog(){
     $loginLog=$this->loginLog;
     if (!is_array($loginLog)) $loginLog=[];
-    $log=date('Y-m-d H:i:s',time()+8*3600).' =&&= '.\LizusVitara\get_ip_address().' =&&= '.$_SERVER['HTTP_USER_AGENT']; 
+    $log=date('Y-m-d H:i:s',time()+8*3600).' =&&= '.\LizusFunction\get_ip_address().' =&&= '.$_SERVER['HTTP_USER_AGENT']; 
     array_unshift($loginLog,$log);
     $loginLog=array_slice($loginLog,0,50);
     $this->_set('loginLog',$loginLog);

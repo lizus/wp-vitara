@@ -2,7 +2,7 @@
 namespace LizusVitara\User;
 
 /**
-* QueryPost
+* QueryUser
 * WP_User_Query查询类，子类在继承的时候只需实现get_item即可
 */
 abstract class QueryUser extends \LizusVitara\Model\QueryData 

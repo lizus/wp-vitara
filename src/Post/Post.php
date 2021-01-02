@@ -73,7 +73,7 @@ class Post extends \LizusVitara\Model\SingleData
     public function getExcerpt($len=255){
         $data=$this->post_excerpt;
         if(empty($data)) $data=$this->post_content;
-        return \LizusVitara\cut_text($data,$len);
+        return \LizusFunction\cut_text($data,$len);
     }
     
     /**

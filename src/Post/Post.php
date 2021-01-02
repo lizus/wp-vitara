@@ -105,6 +105,15 @@ class Post extends \LizusVitara\Model\SingleData
     }
     
     /**
+     * getRealTime
+     * 获取时间值
+     * @return int
+     */
+    public function getRealTime(){
+        return \strtotime($this->getTime('Y-m-d H:i:s'));
+    }
+    
+    /**
     * getPermalink
     * 获取文章链接地址
     * @return string

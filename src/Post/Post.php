@@ -67,13 +67,31 @@ class Post extends \LizusVitara\Model\SingleData
     /**
     * getExcerpt
     * 获取文章摘要
-    * @param  mixed $len
-    * @return void
+    * @param  int $len
+    * @return string
     */
     public function getExcerpt($len=255){
         $data=$this->post_excerpt;
         if(empty($data)) $data=$this->post_content;
         return \LizusVitara\cut_text($data,$len);
+    }
+    
+    /**
+     * getContent
+     * 获取文章内容
+     * @return string
+     */
+    public function getContent(){
+        return \apply_filters('the_content',$this->post_content);
+    }
+    
+    /**
+     * getTitle
+     * 获取文章标题
+     * @return string
+     */
+    public function getTitle(){
+        return \get_the_title($this->id);
     }
     
     /**

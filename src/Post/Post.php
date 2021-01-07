@@ -128,7 +128,7 @@ class Post extends \LizusVitara\Model\SingleData
     * 获取文章所有的归属类目
     * @return array
     */
-    public function getTerms(){
+    public function getAllTerms(){
         if(empty($this->terms)) {
             $taxs=get_object_taxonomies($this->post_type);
             $rs=[];
@@ -149,8 +149,8 @@ class Post extends \LizusVitara\Model\SingleData
      * @param  mixed $name
      * @return void
      */
-    public function getTerm($name='category'){
-        $terms=$this->getTerms();
+    public function getTerms($name='category'){
+        $terms=$this->getAllTerms();
         return $terms[$name] ?? [];
     }
     

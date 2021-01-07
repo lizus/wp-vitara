@@ -9,6 +9,7 @@ namespace LizusVitara\Post;
 class Post extends \LizusVitara\Model\SingleData 
 {
     protected $type='post';
+    protected $terms=[];//存储文章所有归属类目信息
     protected $method=[
         'data'=>'\get_post',
         'get'=>'\get_post_meta',
@@ -128,15 +129,29 @@ class Post extends \LizusVitara\Model\SingleData
     * @return array
     */
     public function getTerms(){
-        $taxs=get_object_taxonomies($this->post_type);
-        $rs=[];
-        if(!empty($taxs)) {
-            foreach ($taxs as $tax) {
-                $terms=get_the_terms($this->id,$tax);
-                if(!empty($terms) && !\is_wp_error($terms)) $rs[$tax]=$terms;
+        if(empty($this->terms)) {
+            $taxs=get_object_taxonomies($this->post_type);
+            $rs=[];
+            if(!empty($taxs)) {
+                foreach ($taxs as $tax) {
+                    $terms=get_the_terms($this->id,$tax);
+                    if(!empty($terms) && !\is_wp_error($terms)) $rs[$tax]=$terms;
+                }
             }
+            $this->terms=$rs;
         }
-        return $rs;
+        return $this->terms;
+    }
+    
+    /**
+     * getTerm
+     * 用于获取文章某个归属类目
+     * @param  mixed $name
+     * @return void
+     */
+    public function getTerm($name='category'){
+        $terms=$this->getTerms();
+        return $terms[$name] ?? [];
     }
     
     protected function has_post_thumbnail(){

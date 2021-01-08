@@ -82,7 +82,7 @@ abstract class SingleData
     */
     public function __get(string $key){
         if(!$this->exist()) return null;
-        if($key === 'id') return $this->data['ID'];
+        if($key === 'id') return isset($this->data['term_id']) ? $this->data['term_id'] : $this->data['ID'];
         $data=null;
         
         if(isset($this->data[$key])) $data=$this->data[$key];

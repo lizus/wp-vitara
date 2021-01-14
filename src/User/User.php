@@ -6,6 +6,7 @@ namespace LizusVitara\User;
 */
 class User extends \LizusVitara\Model\SingleData 
 {
+  protected $default_avatar='';//默认头像
   protected $type='user';//数据类型:post,user,term,comment
   protected $method=[//获取修改删除数据用的方法，根据不同类型不同
     'data'=>'\get_userdata',
@@ -189,8 +190,8 @@ class User extends \LizusVitara\Model\SingleData
   */
   protected function get_avatar($avatar){
     if(empty($avatar)) $avatar=$this->headimgurl;
-    if(empty($avatar) && defined('DEFAULT_AVATAR')) $avatar=DEFAULT_AVATAR;
-    return preg_replace('/^https?/','https',$avatar);
+    if(empty($avatar)) $avatar=$this->default_avatar;
+    return $avatar;
   }
   
   /**

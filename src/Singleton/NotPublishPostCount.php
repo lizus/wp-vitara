@@ -32,6 +32,7 @@ class NotPublishPostCount {
     }
     
     public function save_post($pid,$post,$update){
+        if($post->post_type == 'nav_menu_item') return;
         if(!$update && $post->post_status != 'publish') {
             $key=$this->key($post->post_type.'_count');
             \delete_transient($key);

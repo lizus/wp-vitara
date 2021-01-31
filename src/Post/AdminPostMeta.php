@@ -67,6 +67,7 @@ class AdminPostMeta{
 	}
 	
 	function saveCustomFields( $post_id, $post ) {
+        if($post->post_type == 'nav_menu_item') return;
 		if ( !\current_user_can( $this->cap, $post_id ) ) return ;
 		foreach ( $this->customFields as $customField ) {
 			$cid=$customField['id'];

@@ -31,7 +31,7 @@ abstract class SingleData
         $sid=intval($sid);
         if($sid<1) return;
         $s=\call_user_func($this->method['data'],$sid);
-        if($s !== false ) {
+        if($s !== false && \is_object($s) ) {
             $this->sid=$sid;
             $data=[];
             if(isset($s->data)){
@@ -43,7 +43,6 @@ abstract class SingleData
                     $data[$key]=$value;
                 }
             }
-            //$this->data=$s->to_array();
             $this->data=$data;
             $this->meta_keys=$this->metaKeysInit();
         }
@@ -82,7 +81,7 @@ abstract class SingleData
     */
     public function __get(string $key){
         if(!$this->exist()) return null;
-        if($key === 'id') return isset($this->data['term_id']) ? $this->data['term_id'] : $this->data['ID'];
+        if($key === 'id' || $key === 'ID') return $this->data['term_id'] ?? $this->data['ID'] ?? 0;
         $data=null;
         
         if(isset($this->data[$key])) $data=$this->data[$key];

@@ -18,6 +18,7 @@ class Comment extends \LizusVitara\Model\SingleData
     
     //所有类目中都有的key
     private $basic_keys=[
+        'sticky'=>'\strval',//判断评论置顶，置顶则值为yes
     ];
     
     //不允许使用set来进行设置的key

@@ -22,7 +22,9 @@ class Comment extends \LizusVitara\Model\SingleData
     ];
     
     //不允许使用set来进行设置的key
-    protected $not_set=[];
+    protected $not_set=[
+        'sticky',
+    ];
     
     /**
     * metaKeysInit
@@ -32,5 +34,30 @@ class Comment extends \LizusVitara\Model\SingleData
     */
     protected function metaKeysInit(){
         return $this->basic_keys;
+    }
+
+    /**
+     * isSticky
+     * 用于判断当前评论是否是置顶评论
+     * @return void
+     */
+    public function isSticky(){
+        return $this->sticky == 'yes';
+    }
+    /**
+     * setSticky
+     * 设置该评论为置顶
+     * @return this
+     */
+    public function setSticky(){
+        return $this->_set('sticky','yes');
+    }    
+    /**
+     * delSticky
+     * 删除该评论置顶状态
+     * @return this
+     */
+    public function delSticky(){
+        return $this->del('sticky');
     }
 }

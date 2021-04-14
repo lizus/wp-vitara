@@ -135,6 +135,6 @@ abstract class QueryData
     * @return mixed
     */
     public function do($fn){
-        return \call_user_func($fn,$this->get());
+        return \call_user_func_array($fn,[$this->get()]);
     }
 }

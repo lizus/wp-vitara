@@ -30,7 +30,13 @@ abstract class SingleData
     public function __construct($sid=0){
         $sid=intval($sid);
         if($sid<1) return;
-        $s=\call_user_func($this->method['data'],$sid);
+        /**
+         * 使用call_user_func时在查询评论时，get_comment在php中返回错误 PHP Warning:  Parameter 1 to get_comment() expected to be a reference, value given 
+         * 所以改用直接函数调用的方式
+         */
+        //$s=\call_user_func($this->method['data'],$sid);
+        if(!\is_callable($this->method['data'])) return;
+        $s=$this->method['data']($sid);
         if($s !== false && \is_object($s) ) {
             $this->sid=$sid;
             $data=[];
@@ -86,14 +92,14 @@ abstract class SingleData
         
         if(isset($this->data[$key])) $data=$this->data[$key];
         if(array_key_exists($key,$this->meta_keys)) {
-            $data=\call_user_func($this->method['get'],$this->sid,$this->key($key),true);
+            $data=\call_user_func_array($this->method['get'],[$this->sid,$this->key($key),true]);
         }
         
         //优先使用 get_$key的方法
-        if(\method_exists($this,'get_'.$key)) return \call_user_func([$this,'get_'.$key],$data);
+        if(\method_exists($this,'get_'.$key)) return \call_user_func_array([$this,'get_'.$key],[$data]);
         
         if (array_key_exists($key,$this->meta_keys) && \is_callable($this->meta_keys[$key])) {
-            return \call_user_func($this->meta_keys[$key],$data);
+            return \call_user_func_array($this->meta_keys[$key],[$data]);
         }
         return $data;
     }
@@ -110,10 +116,10 @@ abstract class SingleData
         if(!$this->exist() || \is_null($value)) return false;
         
         //如果有set_$key的方法存在，则对值先进行filter处理
-        if (\method_exists($this,'set_'.$key)) $value=\call_user_func([$this,'set_'.$key],$value);
+        if (\method_exists($this,'set_'.$key)) $value=\call_user_func_array([$this,'set_'.$key],[$value]);
         
         if(array_key_exists($key,$this->meta_keys)) {
-            \call_user_func($this->method['set'],$this->sid,$this->key($key),$value);
+            \call_user_func_array($this->method['set'],[$this->sid,$this->key($key),$value]);
             return true;
         }
         return false;
@@ -141,7 +147,7 @@ abstract class SingleData
     public function del($key){
         if(!$this->exist()) return $this;
         if(array_key_exists($key,$this->meta_keys)) {
-            \call_user_func($this->method['delete'],$this->sid,$this->key($key));
+            \call_user_func_array($this->method['delete'],[$this->sid,$this->key($key)]);
         }
         return $this;
     }
@@ -152,7 +158,7 @@ abstract class SingleData
      * @return array
      */
     public function allMetas(){
-        return \call_user_func($this->method['get'],$this->sid);
+        return \call_user_func_array($this->method['get'],[$this->sid]);
     }
         
     /**

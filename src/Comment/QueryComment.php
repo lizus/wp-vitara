@@ -36,57 +36,62 @@ abstract class QueryComment extends \LizusVitara\Model\QueryData
         $exclude=[];
         $offset=0;//偏移量，普通评论要把所有置顶的评论偏移掉
         $original_num=$this->args['number'] ?? -1;
+        $num=$original_num;
 
-        //先获取置顶评论及其子评论
-        $args=array_merge($this->args,[
-            'meta_key'=>\LizusFunction\v_key('sticky','comment'),
-            'meta_value'=>'yes',
-            'number'=>'',
-            'paged'=>1,
-        ]);
-        $uq=new \WP_Comment_Query($args);
-        $sticky_num=$uq->found_comments;
-        $rs=$uq->comments;
-        $count+=count($rs);
-        $sticky_num=count($rs);
-        foreach ($rs as $item) {
-            if($this->args['paged']==1) {
-                $data[]=$this->get_item($item->comment_ID);
-            }
-
+        /**
+         * 如果有设置post_id，则用于取文章评论，首先要取该文章评论的置顶评论
+         */
+        if(isset($this->args['post_id']) && $this->args['post_id']>0) {
+            //先获取置顶评论及其子评论
             $args=array_merge($this->args,[
-                'parent'=>$item->comment_ID,
+                'meta_key'=>\LizusFunction\v_key('sticky','comment'),
+                'meta_value'=>'yes',
                 'number'=>'',
                 'paged'=>1,
             ]);
             $uq=new \WP_Comment_Query($args);
+            $sticky_num=$uq->found_comments;
             $rs=$uq->comments;
-            foreach ($rs as $it) {
+            $count+=count($rs);
+            $sticky_num=count($rs);
+            foreach ($rs as $item) {
                 if($this->args['paged']==1) {
-                    $data[]=$this->get_item($it->comment_ID);
+                    $data[]=$this->get_item($item->comment_ID);
                 }
 
-                $exclude[]=$it->comment_ID;
-
-                $children=$it->get_children(['format'=>'flat']);
-                foreach ($children as $itt) {
+                $args=array_merge($this->args,[
+                    'parent'=>$item->comment_ID,
+                    'number'=>'',
+                    'paged'=>1,
+                ]);
+                $uq=new \WP_Comment_Query($args);
+                $rs=$uq->comments;
+                foreach ($rs as $it) {
                     if($this->args['paged']==1) {
-                        $data[]=$this->get_item($itt->comment_ID);
+                        $data[]=$this->get_item($it->comment_ID);
                     }
-                    $exclude[]=$itt->comment_ID;
-                }
-            }
-            $exclude[]=$item->comment_ID;
-        }
 
-        if($original_num>0) {
-            $num=$original_num;
-            if($this->args['paged']<=1) {
-                $num=$original_num-$sticky_num;
-            }else {
-                $offset=$original_num-$sticky_num;
-                if($offset<0) $offset=0;
-                $offset+=($this->args['paged']-2)*$this->args['number'];
+                    $exclude[]=$it->comment_ID;
+
+                    $children=$it->get_children(['format'=>'flat']);
+                    foreach ($children as $itt) {
+                        if($this->args['paged']==1) {
+                            $data[]=$this->get_item($itt->comment_ID);
+                        }
+                        $exclude[]=$itt->comment_ID;
+                    }
+                }
+                $exclude[]=$item->comment_ID;
+            }
+
+            if($original_num>0) {
+                if($this->args['paged']<=1) {
+                    $num=$original_num-$sticky_num;
+                }else {
+                    $offset=$original_num-$sticky_num;
+                    if($offset<0) $offset=0;
+                    $offset+=($this->args['paged']-2)*$this->args['number'];
+                }
             }
         }
 

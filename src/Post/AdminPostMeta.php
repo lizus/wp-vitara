@@ -59,6 +59,7 @@ class AdminPostMeta{
 				'value'=>\get_post_meta($post->ID,\LizusFunction\v_key($customField['id'],'post'),true),
 				'default'=>$customField['default'] ?? '',
 				'dragsort'=>$customField['dragsort'] ?? '',
+				'smartSelect'=>$customField['smartSelect'] ?? [],
 			);
 			$setItem=new \LizusVitara\Setting\SettingItem($item);
 			$setItem->output();

@@ -1,6 +1,30 @@
 <?php
 namespace LizusVitara\Setting\Item;
 
+/**
+ * 智能下拉选项框
+ * 设置type='smartSelect'
+ * 需要source和smartSelect项
+ * 示例：
+ array(
+    'id'=>'change_tougao_author',
+    'title'=>'投稿人转换作者',
+    'type'=>'smartSelect',
+    'desc'=>'选择投稿人',
+    'source'=>[
+        'type'=>'custom',
+        'custom'=>get_smartselect_authors(),
+    ],
+    'smartSelect'=>[
+        'total'=>1,//smartSelect用到的最大取值数量
+        'ajax'=>'',
+    ],
+ ),
+ * source的custom项为key=>value数组，value为显示的选项名称，key为值
+ * ajax为获取key=>value数组的ajax网址
+ * source和ajax必须有一项填写
+ */
+
 
 class IteMsmartSelect extends Item {
     

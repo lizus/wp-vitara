@@ -93,6 +93,13 @@ abstract class QueryComment extends \LizusVitara\Model\QueryData
                     $offset+=($this->args['paged']-2)*$this->args['number'];
                 }
             }
+            //用于统计总的拉取的一级评论的数量时需要加上置顶评论。该总数通常用于计算评论需要的页数，但这里有一个可能发生的bug，当置顶评论超过$this->args['number']的时候，第一页拉取的评论数就不止设定的数量了，为了修正这个bug，这个$total对$sticky_num做一个判断，超过$this->args['number']则按$this->args['number']来增加。结果就是$total值本身可能不准确，但其实评论的这个$total基本上只有文章拉取评论页数使用，所以无碍，需要了解评论总数使用文章中的comment_count即可。
+            if($sticky_num>$this->args['number']) {
+                $total+=$this->args['number'];
+            }else {
+                $total+=$sticky_num;
+            }
+
         }
 
         //置顶评论之后再获取其他评论

@@ -29,8 +29,25 @@ namespace LizusVitara\Setting\Item;
 class IteMsmartSelect extends Item {
     
     protected function content($echo=false){
+        $items=$this->get_source();
         $item=$this->data;
-        $value=strval($item['value']);
+        /**
+         * 假如原设置项的值为数组，则使用该数组的值作为key来寻找当前smartselect中是否有该值，如果有则直接使用
+         */
+        if(is_array($item['value'])) {
+            $value=[];
+            foreach ($item['value'] as $k) {
+                $v=$items[$k] ?? $k;
+                $value[]=[
+                    'key'=>$k,
+                    'value'=>$v,
+                ];
+            }
+            $value=\json_encode($value,JSON_UNESCAPED_UNICODE);
+
+        }else {
+            $value=strval($item['value']);
+        }
         /**
          * 基于保存存数据库的格式有不同，有可能存在数据库里的字符串本身就是json_encode的字符串，这时候只要能json_decode就可以了，
          */
@@ -48,12 +65,17 @@ class IteMsmartSelect extends Item {
                 $val=json_decode('[{"key":"'.$value.'","value":"'.$value.'"}]',true);
             }
         }
+        if(is_array($val)){
+            foreach ($val as $k=>$v) {
+                $v['value']=$items[$v['key']] ?? $v['value'];
+                $val[$k]=$v;
+            }
+        }
         if (empty($value)) {
             $val='';
         }
         $value=json_encode($val);
         $html='<div class="row smartSelects">';
-        $items=$this->get_source();
         $name=$item['id'];
         $total=10;
         $ajax='';
@@ -67,6 +89,10 @@ class IteMsmartSelect extends Item {
             $html.='<textarea class="smartSelect-source hidden" data-type="jsonp" data-field="source">';
             $src=[];
             foreach ($items as $k => $v) {
+                /**
+                 * 去除全部不选项
+                 */
+                if($k=='all_setting_empty') continue;
                 $src[]=[
                     'key'=>$k,
                     'value'=>$v,

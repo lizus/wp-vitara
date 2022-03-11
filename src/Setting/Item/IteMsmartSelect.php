@@ -31,9 +31,22 @@ class IteMsmartSelect extends Item {
     protected function content($echo=false){
         $item=$this->data;
         $value=strval($item['value']);
-        $val=json_decode($value);
+        /**
+         * 基于保存存数据库的格式有不同，有可能存在数据库里的字符串本身就是json_encode的字符串，这时候只要能json_decode就可以了，
+         */
+        $val=json_decode($value,true);
         if (is_null($val)) {
-            $val=json_decode('[{"key":"'.$value.'","value":"'.$value.'"}]',true);
+            /**
+             * 假如json_decode失败了，则有可能是因为保存的数据并没有实现清除转义，这时候清除转义再试一次
+             */
+            $value=stripslashes($value);
+            $val=json_decode($value,true);
+            /**
+             * 如果尝试之后仍旧是失败的，则说明原有的数据可能是旧数据，并未使用过smartselect，这时候做一次兼容，让原本的数据也可以直接进行选择使用
+             */
+            if (is_null($val)) {
+                $val=json_decode('[{"key":"'.$value.'","value":"'.$value.'"}]',true);
+            }
         }
         if (empty($value)) {
             $val='';

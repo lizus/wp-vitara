@@ -18,7 +18,8 @@ class IteMdragsort extends Item {
         $html.='<div class="row">';
         $html.='<div class="col-lg-12 form-item">';
         $html.='<textarea name="dragsort_items" data-id="'.$id.'_dragsort_items" data-name="dragsort_items" data-target="'.$id.'" class="input textarea hide-if-js" rows=10 id="'.$id.'_textarea">'.($obj['dragsort_items'] ?? '').'</textarea>';
-        $len=$obj['length']-0;
+        $len=$obj['length'] ?? 0;
+        $len=intval($len);
         $html.='<span class="btn btn-primary add_dragsort" data-dragsort="'.$dragsort.'">添加'.$item['title'].'</span>';
         $html.='<ul class="dragsort_items_ul '.$dragsort.'_ul">';
         for ($i=0; $i < $len; $i++) {

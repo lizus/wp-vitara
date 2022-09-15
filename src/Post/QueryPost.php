@@ -21,6 +21,15 @@ abstract class QueryPost extends \LizusVitara\Model\QueryData
     protected function query(){
         $pq=new \WP_Query($this->args);
         $data=[];
+        //可以内存更小，但失去一些灵活性
+        /*
+        foreach ($pq->posts as $item) {
+            $data[]=[
+                'pid'=>$item->ID,
+                'post_type'=>$item->post_type,
+            ];
+        }
+        */
         if ($pq->have_posts()){
             while ($pq->have_posts()){
                 $pq->the_post();

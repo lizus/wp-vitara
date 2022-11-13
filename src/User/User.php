@@ -202,16 +202,20 @@ class User extends \LizusVitara\Model\SingleData
   protected function check_avatar(){
     $avatar=$this->avatar;
     if(!empty($avatar)) {
-      $headers=get_headers($avatar);
-      $data=$headers[0];
-      if(preg_match('/\s200\s/',$data)) {
-        
-        //微信图片过期判断,在$headers中包含X-ErrNo: -6101表示图片已过期
-        if(in_array('X-ErrNo: -6101',$headers)) {
+      try {
+        $headers=get_headers($avatar);
+        $data=$headers[0];
+        if(preg_match('/\s200\s/',$data)) {
+          
+          //微信图片过期判断,在$headers中包含X-ErrNo: -6101表示图片已过期
+          if(in_array('X-ErrNo: -6101',$headers)) {
+            $this->set('avatar','');
+          }
+        }else {
           $this->set('avatar','');
         }
-      }else {
-        $this->set('avatar','');
+      } catch (\Throwable $th) {
+        //do nothing
       }
     }
     return $this;

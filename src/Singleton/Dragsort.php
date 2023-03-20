@@ -33,7 +33,7 @@ class Dragsort {
             foreach ($data as $key => $value) {
                 if (preg_match('/item_([-_\w]+)_(\d+)/',$key,$match)) {
                     if(empty($opt[$match[2]]) || !is_array($opt[$match[2]])) $opt[$match[2]]=array();
-                    $opt[$match[2]][$match[1]]=urldecode($value);
+                    $opt[$match[2]][$match[1]]=rawurldecode($value);
                 }
             }
         }

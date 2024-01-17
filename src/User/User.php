@@ -47,7 +47,7 @@ class User extends \LizusVitara\Model\SingleData
    * metaKeysInit
    * 方便子类扩展: 
    * return array_merge(parent::metaKeysInit(),['testKey'=>'\strval',]);
-   * @return void
+   * @return array
    */
   protected function metaKeysInit()
   {
@@ -58,7 +58,7 @@ class User extends \LizusVitara\Model\SingleData
    * updateLoginData
    * ANCHOR 用户从微信等登录时更新用户数据
    * @param  mixed $loginData
-   * @return void
+   * @return Object
    */
   public function updateLoginData(array $loginData)
   {
@@ -72,7 +72,7 @@ class User extends \LizusVitara\Model\SingleData
   /**
    * login
    * 用户登录操作
-   * @return $this
+   * @return Object
    */
   public function login()
   {
@@ -92,7 +92,10 @@ class User extends \LizusVitara\Model\SingleData
     \wp_logout();
   }
 
-  //用户权限判断，见user_can
+  /**
+   * 用户权限判断，见user_can
+   * @return bool
+   */
   public function can($capability, ...$args)
   {
     if (!$this->exist()) return false;
@@ -102,13 +105,16 @@ class User extends \LizusVitara\Model\SingleData
   /**
    * createBindCode
    * 用户的注册时间是不会改变的，可以用来验证确定是否为绑定用户登录需求
-   * @return void
+   * @return String
    */
   public function createBindCode()
   {
     return md5($this->user_registered);
   }
 
+  /**
+   * @return bool
+   */
   public function verifyBindCode($code)
   {
     return $code === $this->createBindCode();
@@ -129,7 +135,7 @@ class User extends \LizusVitara\Model\SingleData
    * setUserEmail
    * 设置用户email，该操作应该小心处理，因为邮箱可以用于登录，及找回用户密码操作
    * @param  mixed $email
-   * @return void
+   * @return Object
    */
   public function setUserEmail($email)
   {
@@ -150,7 +156,7 @@ class User extends \LizusVitara\Model\SingleData
    * setDisplayName
    * 设置用户显示的名称
    * @param  mixed $name
-   * @return void
+   * @return Object
    */
   public function setDisplayName($name)
   {
@@ -169,7 +175,7 @@ class User extends \LizusVitara\Model\SingleData
   /**
    * addLoginLog
    * 添加登录日志，通常该函数挂载在wp_login中
-   * @return void
+   * @return Object
    */
   public function addLoginLog()
   {
@@ -211,7 +217,7 @@ class User extends \LizusVitara\Model\SingleData
   /**
    * check_avatar
    * 当用户登录的时候检查一下他的头像，如果头像打不开，则删除
-   * @return void
+   * @return Object
    */
   protected function check_avatar()
   {
@@ -240,7 +246,7 @@ class User extends \LizusVitara\Model\SingleData
    * addPostViews
    * 增加用户的人气值，该值一般使用在增加文章阅读数的时候同步增加
    * @param  mixed $num
-   * @return void
+   * @return Object
    */
   public function addPostViews($num)
   {
@@ -254,7 +260,7 @@ class User extends \LizusVitara\Model\SingleData
   /**
    * getSex
    * 返回性别
-   * @return void
+   * @return String
    */
   public function getSex()
   {

@@ -32,7 +32,7 @@ class Post extends \LizusVitara\Model\SingleData
      * metaKeysInit
      * 方便子孙类扩展: 
      * return array_merge(parent::metaKeysInit(),['testKey'=>'\strval',]);
-     * @return void
+     * @return array
      */
     protected function metaKeysInit()
     {
@@ -42,7 +42,7 @@ class Post extends \LizusVitara\Model\SingleData
     /**
      * addViews
      * 增加文章阅读数
-     * @return void
+     * @return $this
      */
     public function addViews()
     {
@@ -60,7 +60,7 @@ class Post extends \LizusVitara\Model\SingleData
      * setViews
      * 直接设置文章阅读数
      * @param  mixed $views
-     * @return void
+     * @return $this
      */
     public function setViews($views)
     {
@@ -158,7 +158,7 @@ class Post extends \LizusVitara\Model\SingleData
      * getTerm
      * 用于获取文章某个归属类目
      * @param  mixed $name
-     * @return void
+     * @return array
      */
     public function getTerms($name = 'category')
     {

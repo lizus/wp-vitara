@@ -35,6 +35,7 @@ abstract class QueryPost extends \LizusVitara\Model\QueryData
         if ($pq->have_posts()) {
             while ($pq->have_posts()) {
                 $pq->the_post();
+                //使用the_post的时候，会改变global $post的值.
                 $data[] = $this->get_item(get_the_ID());
             }
         }

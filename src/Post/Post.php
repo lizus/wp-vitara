@@ -205,7 +205,7 @@ class Post extends \LizusVitara\Model\SingleData
         if (!empty($images)) {
             foreach ($images as $attachment_id => $attachment) {
                 $image_src = \wp_get_attachment_image_src($attachment_id, 'full');
-                $images_array[] = $image_src;
+                if (!empty($image_src)) $images_array[] = $image_src[0];
             }
         }
         return $images_array;
@@ -223,7 +223,7 @@ class Post extends \LizusVitara\Model\SingleData
         if ($this->has_post_thumbnail()) { //如果有设置封面图
             $imageid = \get_post_thumbnail_id($pid);
             $image = \wp_get_attachment_image_src($imageid, 'full');
-            $src = $image[0];
+            if (!empty($image)) $src = $image[0];
         }
         if (empty($src)) { //如果内容中有图片
             $images = $this->getContentImages($pid);

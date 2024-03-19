@@ -101,25 +101,25 @@ class Dragsort
             foreach ($setting_items as $key => $arr) {
                 if ($count > 0) $cls_add = '';
                 if ($count == count($setting_items) - 1) $cls_add .= ' padding-right-40';
-                $opt .= '<div class="col-md-' . @$arr['width'] . ' ' . $cls_add . '">';
+                $opt .= '<div class="col-md-' . ($arr['width'] ?? '') . ' ' . $cls_add . '">';
                 if ($count < 1) {
                     $opt .= '<em title="点此拖动排序"> ≡ </em>';
                 }
                 switch ($arr['type']) {
                     case 'image':
-                        $opt .= '<a id="item_image_' . $i . '" class="upload_image btn btn-primary" href="#">' . @$arr['placeholder'] . '<i class="icon-image"></i></a><input name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input image_input hide-if-js" value="' . @$data[$key] . '"/>';
+                        $opt .= '<a id="item_image_' . $i . '" class="upload_image btn btn-primary" href="#">' . ($arr['placeholder'] ?? '') . '<i class="icon-image"></i></a><input name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input image_input hide-if-js" value="' . ($data[$key] ?? '') . '"/>';
                         break;
                     case 'textarea':
-                        $opt .= '<textarea name="' . $key . '" data-name="dragsort_item" placeholder="' . @$arr['placeholder'] . '" class="input" rows="5">' . @$data[$key] . '</textarea>';
+                        $opt .= '<textarea name="' . $key . '" data-name="dragsort_item" placeholder="' . ($arr['placeholder'] ?? '') . '" class="input" rows="5">' . ($data[$key] ?? '') . '</textarea>';
                         break;
                     case 'images':
-                        $opt .= '<a id="' . $key . '_' . $i . '" class="upload_images btn btn-primary" href="#">' . @$arr['placeholder'] . '<i class="icon-images"></i></a><br><textarea name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input textarea images_textarea" rows=10 >' . @$data[$key] . '</textarea>';
+                        $opt .= '<a id="' . $key . '_' . $i . '" class="upload_images btn btn-primary" href="#">' . ($arr['placeholder'] ?? '') . '<i class="icon-images"></i></a><br><textarea name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input textarea images_textarea" rows=10 >' . ($data[$key] ?? '') . '</textarea>';
                         break;
                     case 'crop':
-                        $opt .= '<a id="' . $key . '_' . $i . '" class="btn btn-primary" href="#" data-component="image-crop" data-ie9img="' . \LizusFunction\v_url(\get_bloginfo('url') . '/ajax.php', 'action=ie9img') . '" data-url="' . \LizusFunction\v_url(\get_bloginfo('url') . '/ajax.php', 'action=crop_upload') . '" data-width="' . $arr['crop_width'] . '" data-height="' . $arr['crop_height'] . '" data-size=' . (3.5 * 1024 * 1024) . '>' . @$arr['placeholder'] . '<i class="icon-images"></i></a><textarea name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input textarea crop_textarea" rows=10 >' . @$data[$key] . '</textarea>';
+                        $opt .= '<a id="' . $key . '_' . $i . '" class="btn btn-primary" href="#" data-component="image-crop" data-ie9img="' . \LizusFunction\v_url(\get_bloginfo('url') . '/ajax.php', 'action=ie9img') . '" data-url="' . \LizusFunction\v_url(\get_bloginfo('url') . '/ajax.php', 'action=crop_upload') . '" data-width="' . ($arr['crop_width'] ?? '') . '" data-height="' . ($arr['crop_height'] ?? '') . '" data-size=' . (3.5 * 1024 * 1024) . '>' . ($arr['placeholder'] ?? '') . '<i class="icon-images"></i></a><textarea name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input textarea crop_textarea" rows=10 >' . ($data[$key] ?? '') . '</textarea>';
                         break;
                     default:
-                        $opt .= '<input type="text" name="' . $key . '" data-name="dragsort_item" placeholder="' . @$arr['placeholder'] . '" class="input" value="' . @$data[$key] . '" title="' . @$data[$key] . '">';
+                        $opt .= '<input type="text" name="' . $key . '" data-name="dragsort_item" placeholder="' . ($arr['placeholder'] ?? '') . '" class="input" value="' . ($data[$key] ?? '') . '" title="' . ($data[$key] ?? '') . '">';
                         break;
                 }
                 $opt .= '</div>';

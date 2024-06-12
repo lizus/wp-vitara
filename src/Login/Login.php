@@ -93,7 +93,7 @@ abstract class Login
   /**
    * createUser
    * 如果没有查到对应登录渠道的帐号，同时也不是已登录用户的绑定渠道操作
-   * @return void
+   * @return object
    */
   private function createUser()
   {

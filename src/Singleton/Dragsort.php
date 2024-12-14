@@ -112,6 +112,14 @@ class Dragsort
                     case 'textarea':
                         $opt .= '<textarea name="' . $key . '" data-name="dragsort_item" placeholder="' . ($arr['placeholder'] ?? '') . '" class="input" rows="5">' . ($data[$key] ?? '') . '</textarea>';
                         break;
+                    case 'select':
+                        $opt .= '<select name="' . $key . '" data-name="dragsort_item" class="input" id="' . $key . '_' . $i . '" >';
+                        $opt .= '<option value="0">请选择' . ($arr['placeholder'] ?? '') . '</option>';
+                        foreach ($arr['selects'] as $select_key => $select_value) {
+                            $opt .= '<option  value="' . $select_key . '" ' . (isset($data[$key]) && $data[$key] == $select_key ? 'selected' : '') . '>' . $select_value . '</option>';
+                        }
+                        $opt .= '</select>';
+                        break;
                     case 'images':
                         $opt .= '<a id="' . $key . '_' . $i . '" class="upload_images btn btn-primary" href="#">' . ($arr['placeholder'] ?? '') . '<i class="icon-images"></i></a><br><textarea name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input textarea images_textarea" rows=10 >' . ($data[$key] ?? '') . '</textarea>';
                         break;
@@ -119,7 +127,7 @@ class Dragsort
                         $opt .= '<a id="' . $key . '_' . $i . '" class="btn btn-primary" href="#" data-component="image-crop" data-ie9img="' . \LizusFunction\v_url(\get_bloginfo('url') . '/ajax.php', 'action=ie9img') . '" data-url="' . \LizusFunction\v_url(\get_bloginfo('url') . '/ajax.php', 'action=crop_upload') . '" data-width="' . ($arr['crop_width'] ?? '') . '" data-height="' . ($arr['crop_height'] ?? '') . '" data-size=' . (3.5 * 1024 * 1024) . '>' . ($arr['placeholder'] ?? '') . '<i class="icon-images"></i></a><textarea name="' . $key . '" data-id="' . $key . '_' . $i . '" data-name="dragsort_item" class="input textarea crop_textarea" rows=10 >' . ($data[$key] ?? '') . '</textarea>';
                         break;
                     default:
-                        $opt .= '<input type="text" name="' . $key . '" data-name="dragsort_item" placeholder="' . ($arr['placeholder'] ?? '') . '" class="input" value="' . ($data[$key] ?? '') . '" title="' . ($data[$key] ?? '') . '">';
+                        $opt .= '<input type="' . ((isset($arr['type']) && $arr['type'] != 'input' ? $arr['type'] : 'text')) . '" name="' . $key . '" data-name="dragsort_item" placeholder="' . ($arr['placeholder'] ?? '') . '" class="input" value="' . ($data[$key] ?? '') . '" title="' . ($data[$key] ?? '') . '">';
                         break;
                 }
                 $opt .= '</div>';
@@ -129,9 +137,9 @@ class Dragsort
         }
         if (empty($data)) {
             echo $opt;
-            die();
         } else {
             return $opt;
         }
+        die();
     }
 }
